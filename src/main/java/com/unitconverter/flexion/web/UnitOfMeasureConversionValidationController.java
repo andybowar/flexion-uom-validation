@@ -1,5 +1,6 @@
 package com.unitconverter.flexion.web;
 
+import com.unitconverter.flexion.dto.UnitOfMeasureConversionDto;
 import com.unitconverter.flexion.dto.UnitOfMeasureConversionWriteDto;
 import com.unitconverter.flexion.service.UnitOfMeasureConversionValidationService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -19,7 +20,7 @@ public class UnitOfMeasureConversionValidationController {
 
     @Operation(description = "Returns 'correct', 'incorrect' or 'invalid' for the given UOM conversion")
     @PostMapping("/uom-conversion-validation")
-    public String postFacilityItemInventoryDetails(
+    public UnitOfMeasureConversionDto postFacilityItemInventoryDetails(
             @Valid @RequestBody UnitOfMeasureConversionWriteDto dto) {
 
         return unitOfMeasureConversionValidationService.uomConversionValidation(dto);

@@ -2,6 +2,7 @@ package com.unitconverter.flexion.service;
 
 import com.unitconverter.flexion.domain.TemperatureUnitOfMeasure;
 import com.unitconverter.flexion.domain.VolumeUnitOfMeasure;
+import com.unitconverter.flexion.dto.UnitOfMeasureConversionDto;
 import com.unitconverter.flexion.dto.UnitOfMeasureConversionWriteDto;
 import com.unitconverter.flexion.util.UnitConversionUtil;
 import lombok.RequiredArgsConstructor;
@@ -34,7 +35,7 @@ public class UnitOfMeasureConversionValidationService {
      This makes the code a bit more simple, as it prevents us from having to create a separate case for every
      possible input and target UOM combination.
      */
-    public String uomConversionValidation(UnitOfMeasureConversionWriteDto dto) {
+    public UnitOfMeasureConversionDto uomConversionValidation(UnitOfMeasureConversionWriteDto dto) {
         boolean isInputUomVolume = EnumUtils.isValidEnumIgnoreCase(VolumeUnitOfMeasure.class, dto.inputUom);
         boolean isInputUomTemperature = EnumUtils.isValidEnumIgnoreCase(TemperatureUnitOfMeasure.class, dto.inputUom);
         boolean isTargetUomVolume = EnumUtils.isValidEnumIgnoreCase(VolumeUnitOfMeasure.class, dto.targetUom);
@@ -43,57 +44,65 @@ public class UnitOfMeasureConversionValidationService {
         boolean inputAndTargetAreVolume = isInputUomVolume && isTargetUomVolume;
         boolean inputAndTargetAreTemperature = isInputUomTemperature && isTargetUomTemperature;
 
+        var conversionDto = new UnitOfMeasureConversionDto();
+
         if (!isInputUomVolume
                 && !isTargetUomVolume
                 && !isInputUomTemperature
                 && !isTargetUomTemperature) {
-            return "invalid";
+            conversionDto.validationOutput = "invalid";
+            return conversionDto;
         }
 
         if (isInputUomVolume && !isTargetUomVolume) {
-            return "invalid";
+            conversionDto.validationOutput = "invalid";
+            return conversionDto;
         } else if (!isInputUomVolume && isTargetUomVolume) {
-            return "invalid";
+            conversionDto.validationOutput = "invalid";
+            return conversionDto;
         }
 
         if (inputAndTargetAreVolume) {
             // Calculate inputNumericalValue conversion to cubic inches
             BigDecimal numericalValueAsCubicInches = UnitConversionUtil.convertVolumeToCubicInches(dto.inputUom, dto.inputNumericalValue);
-            return validateVolumeConversion(numericalValueAsCubicInches, dto.targetUom, dto.studentAnswer);
+            validateVolumeConversion(numericalValueAsCubicInches, dto.targetUom, dto.studentAnswer, conversionDto);
         }
 
         if (isInputUomTemperature && !isTargetUomTemperature) {
-            return "invalid";
+            conversionDto.validationOutput = "invalid";
+            return conversionDto;
         } else if (!isInputUomTemperature && isTargetUomTemperature) {
-            return "invalid";
+            conversionDto.validationOutput = "invalid";
+            return conversionDto;
         }
 
         if (inputAndTargetAreTemperature) {
             // Calculate inputNumericalValue conversion to base UOM
             BigDecimal numericalValueAsFahrenheit = UnitConversionUtil.convertTemperatureToFahrenheit(dto.inputUom, dto.inputNumericalValue);
-            return validateTemperatureConversion(numericalValueAsFahrenheit, dto.targetUom, dto.studentAnswer);
+            validateTemperatureConversion(numericalValueAsFahrenheit, dto.targetUom, dto.studentAnswer, conversionDto);
         }
 
-        return "";
+        return conversionDto;
     }
 
-    private String validateVolumeConversion(BigDecimal inputNumericalValueAsCubicInches, String targetUom, BigDecimal studentAnswer) {
+    private void validateVolumeConversion(BigDecimal inputNumericalValueAsCubicInches, String targetUom, BigDecimal studentAnswer, UnitOfMeasureConversionDto conversionDto) {
         BigDecimal numericalValueAsTargetUom = UnitConversionUtil.convertVolumeFromCubicInches(targetUom, inputNumericalValueAsCubicInches);
 
-        if (numericalValueAsTargetUom.equals(studentAnswer)) {
-            return "correct";
+        if (UnitConversionUtil.equalsIgnoreScale(numericalValueAsTargetUom, studentAnswer)) {
+            conversionDto.validationOutput = "correct";
         } else {
-            return "incorrect";
+            conversionDto.validationOutput = "incorrect";
+
         }
     }
 
-    private String validateTemperatureConversion(BigDecimal inputNumericalValueAsFahrenheit, String targetUom, BigDecimal studentAnswer) {
+    private void validateTemperatureConversion(BigDecimal inputNumericalValueAsFahrenheit, String targetUom, BigDecimal studentAnswer, UnitOfMeasureConversionDto conversionDto) {
         BigDecimal numericalValueAsTargetUom = UnitConversionUtil.convertTemperatureFromFahrenheit(targetUom, inputNumericalValueAsFahrenheit);
 
         if (UnitConversionUtil.equalsIgnoreScale(numericalValueAsTargetUom, studentAnswer)) {
-            return "correct";
+            conversionDto.validationOutput = "correct";
         } else {
-            return "incorrect";
+            conversionDto.validationOutput = "incorrect";
         }
     }
 }
