@@ -72,9 +72,9 @@ public class UnitOfMeasureConversionValidationService {
         }
 
         try {
-            Long.parseLong(dto.studentAnswer);
+            Double.parseDouble(dto.studentAnswer);
         } catch (NumberFormatException e) {
-            log.error("Could not parse student answer to number format. Returning incorrect as answer evaluation.");
+            log.error("Could not parse student answer to number format. Returning incorrect as answer evaluation.", e);
             conversionDto.validationOutput = "incorrect";
             return conversionDto;
         }
@@ -82,7 +82,7 @@ public class UnitOfMeasureConversionValidationService {
         if (inputAndTargetAreVolume) {
             // Calculate inputNumericalValue conversion to cubic inches
             BigDecimal numericalValueAsCubicInches = UnitConversionUtil.convertVolumeToCubicInches(dto.inputUom.toLowerCase(), dto.inputNumericalValue);
-            validateVolumeConversion(numericalValueAsCubicInches, dto.targetUom.toLowerCase(), BigDecimal.valueOf(Long.parseLong(dto.studentAnswer)), conversionDto);
+            validateVolumeConversion(numericalValueAsCubicInches, dto.targetUom.toLowerCase(), BigDecimal.valueOf(Double.parseDouble(dto.studentAnswer)), conversionDto);
         }
 
         if (isInputUomTemperature && !isTargetUomTemperature) {
@@ -96,7 +96,7 @@ public class UnitOfMeasureConversionValidationService {
         if (inputAndTargetAreTemperature) {
             // Calculate inputNumericalValue conversion to base UOM
             BigDecimal numericalValueAsFahrenheit = UnitConversionUtil.convertTemperatureToFahrenheit(dto.inputUom.toLowerCase(), dto.inputNumericalValue);
-            validateTemperatureConversion(numericalValueAsFahrenheit, dto.targetUom.toLowerCase(), BigDecimal.valueOf(Long.parseLong(dto.studentAnswer)), conversionDto);
+            validateTemperatureConversion(numericalValueAsFahrenheit, dto.targetUom.toLowerCase(), BigDecimal.valueOf(Double.parseDouble(dto.studentAnswer)), conversionDto);
         }
 
         return conversionDto;
@@ -108,6 +108,7 @@ public class UnitOfMeasureConversionValidationService {
         if (UnitConversionUtil.equalsIgnoreScale(numericalValueAsTargetUom, studentAnswer)) {
             conversionDto.validationOutput = "correct";
         } else {
+            log.info("An incorrect answer has been provided for volume conversion. The correct answer is: {}", numericalValueAsTargetUom);
             conversionDto.validationOutput = "incorrect";
 
         }
@@ -119,6 +120,7 @@ public class UnitOfMeasureConversionValidationService {
         if (UnitConversionUtil.equalsIgnoreScale(numericalValueAsTargetUom, studentAnswer)) {
             conversionDto.validationOutput = "correct";
         } else {
+            log.info("An incorrect answer has been provided for temperature conversion. The correct answer is: {}", numericalValueAsTargetUom);
             conversionDto.validationOutput = "incorrect";
         }
     }
