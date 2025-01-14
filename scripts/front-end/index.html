@@ -11,7 +11,7 @@
             const inputNumericalValue = parseFloat(document.getElementById('inputNumericalValue').value) || 0;
             const inputUom = document.getElementById('inputUom').value;
             const targetUom = document.getElementById('targetUom').value;
-            const studentAnswer = parseFloat(document.getElementById('studentAnswer').value) || 0;
+            const studentAnswer = document.getElementById('studentAnswer').value;
 
             const payload = {
                 inputNumericalValue,
@@ -21,7 +21,7 @@
             };
 
             try {
-                const response = await fetch('http://127.0.0.1:8080/uom-conversion-validation', {
+                const response = await fetch('http://localhost:8080/uom-conversion-validation', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
@@ -44,29 +44,39 @@
 </head>
 <body class="bg-light">
 <div class="container mt-5">
-    <h1 class="text-center mb-4">POST Endpoint Demo</h1>
-    <p>
-        Input and Target UOMs should either be volume or temperature UOMs. The following values are valid:
-    </p>
-    <h4>Temperature</h4>
-    <ul>
-        <li>kelvin</li>
-        <li>celsius</li>
-        <li>fahrenheit</li>
-        <li>rankine</li>
-    </ul>
-    <h4>Volume</h4>
-    <ul>
-        <li>liters</li>
-        <li>tablespoons</li>
-        <li>cubic inches</li>
-        <li>cups</li>
-        <li>cubic feet</li>
-        <li>gallons</li>
-    </ul>
-    <p>
-        Enter the value and UOM to convert from, the UOM to convert to, and your guess for what the result should be.
-    </p>
+    <h1 class="text-center mb-4">Unit Conversion Validation</h1>
+    <div class="mt-5 d-flex justify-content-center">
+        <div class="w-75">
+            <p>
+            Input and Target UOMs should either be volume or temperature UOMs. The following values are valid:
+            </p>
+            <div class="row">
+                <div class="col-md-6">
+                    <h4>Temperature</h4>
+                    <ul>
+                        <li>kelvin</li>
+                        <li>celsius</li>
+                        <li>fahrenheit</li>
+                        <li>rankine</li>
+                    </ul>
+                </div>
+                <div class="col-md-6">
+                    <h4>Volume</h4>
+                    <ul>
+                        <li>liters</li>
+                        <li>tablespoons</li>
+                        <li>cubic inches</li>
+                        <li>cups</li>
+                        <li>cubic feet</li>
+                        <li>gallons</li>
+                    </ul>
+                </div>
+            </div>
+            <p>
+                Enter the value and UOM to convert from, the UOM to convert to, and your guess for what the result should be.
+            </p>
+        </div>
+    </div>
     <form class="card p-4 shadow-sm" onsubmit="event.preventDefault(); sendRequest();">
         <div class="mb-3">
             <label for="inputNumericalValue" class="form-label">Input Numerical Value:</label>
@@ -75,22 +85,22 @@
 
         <div class="mb-3">
             <label for="inputUom" class="form-label">Input UOM:</label>
-            <input type="text" id="inputUom" name="inputUom" class="form-control" required>
+            <input type="text" list="uom-options" id="inputUom" name="inputUom" class="form-control" required>
         </div>
 
         <div class="mb-3">
             <label for="targetUom" class="form-label">Target UOM:</label>
-            <input type="text" id="targetUom" name="targetUom" class="form-control" required>
+            <input type="text" list="uom-options" id="targetUom" name="targetUom" class="form-control" required>
         </div>
 
         <div class="mb-3">
             <label for="studentAnswer" class="form-label">Student Answer:</label>
-            <input type="number" id="studentAnswer" name="studentAnswer" class="form-control" step="any" required>
+            <input type="text" id="studentAnswer" name="studentAnswer" class="form-control" step="any" required>
         </div>
 
         <div class="mb-3">
             <label for="responseField" class="form-label">Response:</label>
-            <textarea id="responseField" name="responseField" class="form-control" rows="1" readonly></textarea>
+            <textarea id="responseField" name="responseField" class="form-control" rows="1" disabled></textarea>
         </div>
 
         <div class="text-center">
@@ -98,5 +108,16 @@
         </div>
     </form>
 </div>
+<datalist id="uom-options">
+    <option value="Liters"></option>
+    <option value="Tablespoons"></option>
+    <option value="Cubic Inches"></option>
+    <option value="Cups"></option>
+    <option value="Cubic Feet"></option>
+    <option value="Kelvin"></option>
+    <option value="Celsius"></option>
+    <option value="Fahrenheit"></option>
+    <option value="Rankine"></option>
+</datalist>
 </body>
 </html>

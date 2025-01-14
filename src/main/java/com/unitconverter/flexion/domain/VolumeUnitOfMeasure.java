@@ -9,9 +9,9 @@ import lombok.RequiredArgsConstructor;
 public enum VolumeUnitOfMeasure {
     LITERS("liters"),
     TABLESPOONS("tablespoons"),
-    CUBIC_INCHES("cubic inches"), //default
+    CUBIC_INCHES("cubic_inches"), //default
     CUPS("cups"),
-    CUBIC_FEET("cubic feet"),
+    CUBIC_FEET("cubic_feet"),
     GALLONS("gallons");
 
     private final String displayName;

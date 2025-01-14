@@ -6,16 +6,19 @@ import com.unitconverter.flexion.dto.UnitOfMeasureConversionDto;
 import com.unitconverter.flexion.dto.UnitOfMeasureConversionWriteDto;
 import com.unitconverter.flexion.util.UnitConversionUtil;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.EnumUtils;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.text.ParseException;
 
 import static com.unitconverter.flexion.domain.VolumeUnitOfMeasure.*;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class UnitOfMeasureConversionValidationService {
 
     /*
@@ -36,13 +39,19 @@ public class UnitOfMeasureConversionValidationService {
      possible input and target UOM combination.
      */
     public UnitOfMeasureConversionDto uomConversionValidation(UnitOfMeasureConversionWriteDto dto) {
-        boolean isInputUomVolume = EnumUtils.isValidEnumIgnoreCase(VolumeUnitOfMeasure.class, dto.inputUom);
-        boolean isInputUomTemperature = EnumUtils.isValidEnumIgnoreCase(TemperatureUnitOfMeasure.class, dto.inputUom);
-        boolean isTargetUomVolume = EnumUtils.isValidEnumIgnoreCase(VolumeUnitOfMeasure.class, dto.targetUom);
-        boolean isTargetUomTemperature = EnumUtils.isValidEnumIgnoreCase(TemperatureUnitOfMeasure.class, dto.targetUom);
+        if (dto.inputUom.contains(" ")) {
+            dto.inputUom = dto.inputUom.replace(" ", "_");
+        }
+        if (dto.targetUom.contains(" ")) {
+            dto.targetUom = dto.targetUom.replace(" ", "_");
+        }
+        var isInputUomVolume = EnumUtils.isValidEnumIgnoreCase(VolumeUnitOfMeasure.class, dto.inputUom);
+        var isInputUomTemperature = EnumUtils.isValidEnumIgnoreCase(TemperatureUnitOfMeasure.class, dto.inputUom);
+        var isTargetUomVolume = EnumUtils.isValidEnumIgnoreCase(VolumeUnitOfMeasure.class, dto.targetUom);
+        var isTargetUomTemperature = EnumUtils.isValidEnumIgnoreCase(TemperatureUnitOfMeasure.class, dto.targetUom);
 
-        boolean inputAndTargetAreVolume = isInputUomVolume && isTargetUomVolume;
-        boolean inputAndTargetAreTemperature = isInputUomTemperature && isTargetUomTemperature;
+        var inputAndTargetAreVolume = isInputUomVolume && isTargetUomVolume;
+        var inputAndTargetAreTemperature = isInputUomTemperature && isTargetUomTemperature;
 
         var conversionDto = new UnitOfMeasureConversionDto();
 
@@ -62,10 +71,18 @@ public class UnitOfMeasureConversionValidationService {
             return conversionDto;
         }
 
+        try {
+            Long.parseLong(dto.studentAnswer);
+        } catch (NumberFormatException e) {
+            log.error("Could not parse student answer to number format. Returning incorrect as answer evaluation.");
+            conversionDto.validationOutput = "incorrect";
+            return conversionDto;
+        }
+
         if (inputAndTargetAreVolume) {
             // Calculate inputNumericalValue conversion to cubic inches
-            BigDecimal numericalValueAsCubicInches = UnitConversionUtil.convertVolumeToCubicInches(dto.inputUom, dto.inputNumericalValue);
-            validateVolumeConversion(numericalValueAsCubicInches, dto.targetUom, dto.studentAnswer, conversionDto);
+            BigDecimal numericalValueAsCubicInches = UnitConversionUtil.convertVolumeToCubicInches(dto.inputUom.toLowerCase(), dto.inputNumericalValue);
+            validateVolumeConversion(numericalValueAsCubicInches, dto.targetUom.toLowerCase(), BigDecimal.valueOf(Long.parseLong(dto.studentAnswer)), conversionDto);
         }
 
         if (isInputUomTemperature && !isTargetUomTemperature) {
@@ -78,8 +95,8 @@ public class UnitOfMeasureConversionValidationService {
 
         if (inputAndTargetAreTemperature) {
             // Calculate inputNumericalValue conversion to base UOM
-            BigDecimal numericalValueAsFahrenheit = UnitConversionUtil.convertTemperatureToFahrenheit(dto.inputUom, dto.inputNumericalValue);
-            validateTemperatureConversion(numericalValueAsFahrenheit, dto.targetUom, dto.studentAnswer, conversionDto);
+            BigDecimal numericalValueAsFahrenheit = UnitConversionUtil.convertTemperatureToFahrenheit(dto.inputUom.toLowerCase(), dto.inputNumericalValue);
+            validateTemperatureConversion(numericalValueAsFahrenheit, dto.targetUom.toLowerCase(), BigDecimal.valueOf(Long.parseLong(dto.studentAnswer)), conversionDto);
         }
 
         return conversionDto;
