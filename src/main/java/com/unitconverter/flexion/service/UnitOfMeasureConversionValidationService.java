@@ -26,7 +26,7 @@ public class UnitOfMeasureConversionValidationService {
      - If UOMs are of different types OR one or both UOMs are not valid UOMs, return "invalid"
      - If student response is not numerical, return "incorrect"
 
-     For each UOM type, a UOM was chosen to be the "base" UOM (cups for volume, Fahrenheit for temperature.
+     For each UOM type, a UOM was chosen to be the "base" UOM (cubic inches for volume, Fahrenheit for temperature.
      Every incoming inputNumericalValue is converted to the "base UOM" according to the inputUom's type.
      That number is then passed to the private method for that UOM type, where it is then converted to the
      target UOM and compared to the studentResponse value.
@@ -55,6 +55,7 @@ public class UnitOfMeasureConversionValidationService {
 
         var conversionDto = new UnitOfMeasureConversionDto();
 
+        // Return "invalid" if both UOMs are invalid
         if (!isInputUomVolume
                 && !isTargetUomVolume
                 && !isInputUomTemperature
@@ -63,6 +64,7 @@ public class UnitOfMeasureConversionValidationService {
             return conversionDto;
         }
 
+        // Returns "invalid" if one UOM is valid but the other isn't
         if (isInputUomVolume && !isTargetUomVolume) {
             conversionDto.validationOutput = "invalid";
             return conversionDto;
@@ -71,6 +73,7 @@ public class UnitOfMeasureConversionValidationService {
             return conversionDto;
         }
 
+        // Returns "incorrect" if student answer can't be parsed as a number
         try {
             Double.parseDouble(dto.studentAnswer);
         } catch (NumberFormatException e) {
@@ -82,9 +85,11 @@ public class UnitOfMeasureConversionValidationService {
         if (inputAndTargetAreVolume) {
             // Calculate inputNumericalValue conversion to cubic inches
             BigDecimal numericalValueAsCubicInches = UnitConversionUtil.convertVolumeToCubicInches(dto.inputUom.toLowerCase(), dto.inputNumericalValue);
+
             validateVolumeConversion(numericalValueAsCubicInches, dto.targetUom.toLowerCase(), BigDecimal.valueOf(Double.parseDouble(dto.studentAnswer)), conversionDto);
         }
 
+        // Returns "invalid" if one UOM is valid but the other isn't
         if (isInputUomTemperature && !isTargetUomTemperature) {
             conversionDto.validationOutput = "invalid";
             return conversionDto;
@@ -96,6 +101,7 @@ public class UnitOfMeasureConversionValidationService {
         if (inputAndTargetAreTemperature) {
             // Calculate inputNumericalValue conversion to base UOM
             BigDecimal numericalValueAsFahrenheit = UnitConversionUtil.convertTemperatureToFahrenheit(dto.inputUom.toLowerCase(), dto.inputNumericalValue);
+
             validateTemperatureConversion(numericalValueAsFahrenheit, dto.targetUom.toLowerCase(), BigDecimal.valueOf(Double.parseDouble(dto.studentAnswer)), conversionDto);
         }
 
@@ -110,7 +116,6 @@ public class UnitOfMeasureConversionValidationService {
         } else {
             log.info("An incorrect answer has been provided for volume conversion. The correct answer is: {}", numericalValueAsTargetUom);
             conversionDto.validationOutput = "incorrect";
-
         }
     }
 
