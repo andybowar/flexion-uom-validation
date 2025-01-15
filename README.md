@@ -16,3 +16,10 @@ Notes on functionality
 * Again on the webpage, the expected output for the "Response" field is "correct", "incorrect", or "invalid"
   * "invalid" should only occur when units of different types are being compared
   * An incorrect answer, including something nonsensical like a string, should render a response of "incorrect"
+
+TO DO
+---
+* Address TODOs in code
+* Add integration tests
+* Fix issue where String can be passed for `inputNumericalValue`, causing an error 
+* Add docker containerization and get pipeline working in Github
