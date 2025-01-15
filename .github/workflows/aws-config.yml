@@ -9,7 +9,7 @@ env:
   ECR_REPOSITORY: flexion-ecr/uom-conversion-app
   ECS_SERVICE: code-challenge-service
   ECS_CLUSTER: app-cluster-2
-  ECS_TASK_DEFINITION: code-challenge-task-definition.json
+  ECS_TASK_DEFINITION: .github/workflows/code-challenge-task-definition.json
   CONTAINER_NAME: unit-conversion
 
 permissions:
