@@ -6,41 +6,6 @@
     <title>POST Endpoint Demo</title>
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
-    <script>
-        async function sendRequest() {
-            const inputNumericalValue = parseFloat(document.getElementById('inputNumericalValue').value) || 0;
-            const inputUom = document.getElementById('inputUom').value;
-            const targetUom = document.getElementById('targetUom').value;
-            const studentAnswer = document.getElementById('studentAnswer').value;
-
-            const payload = {
-                inputNumericalValue,
-                inputUom,
-                targetUom,
-                studentAnswer
-            };
-
-            try {
-                const response = await fetch('http://localhost:8080/uom-conversion-validation', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(payload)
-                });
-
-                if (!response.ok) {
-                    throw new Error(`HTTP error! Status: ${response.status}`);
-                }
-
-                const responseData = await response.json();
-                document.getElementById('responseField').value = responseData.validationOutput;
-            } catch (error) {
-                console.error('Error:', error);
-                document.getElementById('responseField').value = `Error: ${error.message}`;
-            }
-        }
-    </script>
 </head>
 <body class="bg-light">
 <div class="container mt-5">
@@ -78,36 +43,44 @@
         </div>
     </div>
     <form class="card p-4 shadow-sm" onsubmit="event.preventDefault(); sendRequest();">
-        <div class="mb-3">
-            <label for="inputNumericalValue" class="form-label">Input Numerical Value:</label>
-            <input type="number" id="inputNumericalValue" name="inputNumericalValue" class="form-control" step="any" required>
+        <div id="inputRows">
+            <div class="row g-2 mb-2 align-items-center">
+                <div class="col-md-2">
+                    <label for="inputNumericalValue" class="form-label">Numerical Input:</label>
+                    <input type="number" id="inputNumericalValue" class="form-control" name="inputNumericalValue" step="any" required>
+                </div>
+                <div class="col-md-2">
+                    <label for="inputUom" class="form-label">Input UOM:</label>
+                    <input type="text" id="inputUom" list="uom-options" class="form-control" name="inputUom" required>
+                </div>
+                <div class="col-md-2">
+                    <label for="targetUom" class="form-label">Target UOM:</label>
+                    <input type="text" id="targetUom" list="uom-options" class="form-control" name="targetUom" required>
+                </div>
+                <div class="col-md-2">
+                    <label for="studentAnswer" class="form-label">Student Answer:</label>
+                    <input type="text" id="studentAnswer" class="form-control" name="studentAnswer" step="any" required>
+                </div>
+                <div class="col-md-2">
+                    <label for="responseField" class="form-label">Response:</label>
+                    <textarea id="responseField" name="responseField" class="form-control" rows="1" disabled></textarea>
+                </div>
+                <div class="col-md-2 text-center">
+                    <label for="removeButton" class="form-label" style="color: white;">Remove button:</label>
+                    <button id="removeButton" type="button" class="btn btn-danger" onclick="removeRow(this)">Remove</button>
+                </div>
+            </div>
         </div>
-
-        <div class="mb-3">
-            <label for="inputUom" class="form-label">Input UOM:</label>
-            <input type="text" list="uom-options" id="inputUom" name="inputUom" class="form-control" required>
+        <div class="mb-3 text-center">
+            <button type="button" class="btn btn-success" onclick="addInputRow()">Add Another</button>
         </div>
-
-        <div class="mb-3">
-            <label for="targetUom" class="form-label">Target UOM:</label>
-            <input type="text" list="uom-options" id="targetUom" name="targetUom" class="form-control" required>
-        </div>
-
-        <div class="mb-3">
-            <label for="studentAnswer" class="form-label">Student Answer:</label>
-            <input type="text" id="studentAnswer" name="studentAnswer" class="form-control" step="any" required>
-        </div>
-
-        <div class="mb-3">
-            <label for="responseField" class="form-label">Response:</label>
-            <textarea id="responseField" name="responseField" class="form-control" rows="1" disabled></textarea>
-        </div>
-
         <div class="text-center">
             <button type="submit" class="btn btn-primary">Send Request</button>
         </div>
     </form>
 </div>
+<script src="uom-conversion.js"></script>
+</body>
 <datalist id="uom-options">
     <option value="Liters"></option>
     <option value="Tablespoons"></option>
@@ -119,5 +92,4 @@
     <option value="Fahrenheit"></option>
     <option value="Rankine"></option>
 </datalist>
-</body>
 </html>

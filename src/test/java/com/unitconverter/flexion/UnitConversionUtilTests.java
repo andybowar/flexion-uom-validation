@@ -8,6 +8,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest
 class UnitConversionUtilTests {
@@ -51,19 +52,19 @@ class UnitConversionUtilTests {
 	@Test
 	void cupsUom_shouldConvertFromCubicInches() {
 		var result = UnitConversionUtil.convertVolumeFromCubicInches("cups", BigDecimal.valueOf(14.4375));
-		UnitConversionUtil.equalsIgnoreScale(BigDecimal.valueOf(1), result);
+		assertTrue(UnitConversionUtil.equalsIgnoreScale(BigDecimal.valueOf(1), result));
 	}
 
 	@Test
 	void litersUom_shouldConvertFromCubicInches() {
 		var result = UnitConversionUtil.convertVolumeFromCubicInches("liters", BigDecimal.valueOf(61.023744));
-		UnitConversionUtil.equalsIgnoreScale(BigDecimal.valueOf(1), result);
+		assertTrue(UnitConversionUtil.equalsIgnoreScale(BigDecimal.valueOf(1), result));
 	}
 
 	@Test
 	void tablespoonsUom_shouldConvertFromCubicInches() {
 		var result = UnitConversionUtil.convertVolumeFromCubicInches("tablespoons", BigDecimal.valueOf(0.902344));
-		UnitConversionUtil.equalsIgnoreScale(BigDecimal.valueOf(1), result);
+		assertTrue(UnitConversionUtil.equalsIgnoreScale(BigDecimal.valueOf(1), result));
 	}
 
 	@Test

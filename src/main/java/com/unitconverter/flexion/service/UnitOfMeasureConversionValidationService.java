@@ -104,7 +104,7 @@ public class UnitOfMeasureConversionValidationService {
 
     private void validateVolumeConversion(BigDecimal inputNumericalValueAsCubicInches, String targetUom, BigDecimal studentAnswer, UnitOfMeasureConversionDto conversionDto) {
         BigDecimal numericalValueAsTargetUom = UnitConversionUtil.convertVolumeFromCubicInches(targetUom, inputNumericalValueAsCubicInches);
-
+        // TODO: Evaluate after rounding numericalValueAsTargetUom and studentAnswer to tenths place
         if (UnitConversionUtil.equalsIgnoreScale(numericalValueAsTargetUom, studentAnswer)) {
             conversionDto.validationOutput = "correct";
         } else {
@@ -116,7 +116,7 @@ public class UnitOfMeasureConversionValidationService {
 
     private void validateTemperatureConversion(BigDecimal inputNumericalValueAsFahrenheit, String targetUom, BigDecimal studentAnswer, UnitOfMeasureConversionDto conversionDto) {
         BigDecimal numericalValueAsTargetUom = UnitConversionUtil.convertTemperatureFromFahrenheit(targetUom, inputNumericalValueAsFahrenheit);
-
+        // TODO: Evaluate after rounding numericalValueAsTargetUom and studentAnswer to tenths place
         if (UnitConversionUtil.equalsIgnoreScale(numericalValueAsTargetUom, studentAnswer)) {
             conversionDto.validationOutput = "correct";
         } else {
