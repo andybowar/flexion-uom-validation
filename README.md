@@ -22,4 +22,4 @@ TO DO
 * Address TODOs in code
 * Add integration tests
 * Fix issue where String can be passed for `inputNumericalValue`, causing an error 
-* Add docker containerization and get pipeline working in Github
+* ~~Add docker containerization and get pipeline working in Github~~
