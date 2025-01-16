@@ -17,7 +17,7 @@ import java.math.RoundingMode;
 @Slf4j
 public class UnitOfMeasureConversionValidationService {
 
-    /*
+    /**
      Top-level method validates incoming data
      - If UOMs are of different types OR one or both UOMs are not valid UOMs, return "invalid"
      - If student response is not numerical, return "incorrect"

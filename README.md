@@ -1,8 +1,7 @@
 Running the application:
 ===
-* After cloning the repo, if using Intellij, go to the Project Structure settings and make sure OpenJDK 19 is set as the SDK.
-* In the command line, navigate to the directory of this project and run `mvn clean install`
-* Run the project by running `mvn spring-boot:run` in the command line
+* In the command line, navigate to the directory of this project and run `./mvnw clean install`
+* Run the project by running `./mvnw spring-boot:run` in the command line
 
 Using the application
 ---

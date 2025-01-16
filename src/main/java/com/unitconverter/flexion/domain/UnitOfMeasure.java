@@ -9,12 +9,12 @@ import lombok.RequiredArgsConstructor;
 public enum UnitOfMeasure {
     KELVIN(UomType.TEMPERATURE),
     CELSIUS(UomType.TEMPERATURE),
-    FAHRENHEIT(UomType.TEMPERATURE), // default
+    FAHRENHEIT(UomType.TEMPERATURE), // base temperature uom
     RANKINE(UomType.TEMPERATURE),
 
     LITERS(UomType.VOLUME),
     TABLESPOONS(UomType.VOLUME),
-    CUBIC_INCHES(UomType.VOLUME), //default
+    CUBIC_INCHES(UomType.VOLUME), // base volume uom
     CUPS(UomType.VOLUME),
     CUBIC_FEET(UomType.VOLUME),
     GALLONS(UomType.VOLUME);
