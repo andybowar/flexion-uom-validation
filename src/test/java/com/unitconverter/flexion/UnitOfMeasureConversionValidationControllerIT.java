@@ -141,12 +141,35 @@ public class UnitOfMeasureConversionValidationControllerIT {
      * Tests {@link com.unitconverter.flexion.web.UnitOfMeasureConversionValidationController#postFacilityItemInventoryDetails(UnitOfMeasureConversionWriteDto)}
      */
     @Test
-    void convertUnits_shouldReturnInvalid_whenUomInvalid() throws Exception {
+    void convertUnits_shouldReturnInvalid_whenOneUomInvalid() throws Exception {
 
         var uomConversionWriteDto = new UnitOfMeasureConversionWriteDto();
         uomConversionWriteDto.inputNumericalValue = BigDecimal.valueOf(136.1);
         uomConversionWriteDto.inputUom = "dog";
         uomConversionWriteDto.targetUom = "Celsius";
+        uomConversionWriteDto.studentAnswer = "45.32";
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        var json = objectMapper.writeValueAsBytes(uomConversionWriteDto);
+
+        mockMvc.perform(
+                        post("/uom-conversion-validation")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(json))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.validationOutput").value("invalid"));
+    }
+
+    /**
+     * Tests {@link com.unitconverter.flexion.web.UnitOfMeasureConversionValidationController#postFacilityItemInventoryDetails(UnitOfMeasureConversionWriteDto)}
+     */
+    @Test
+    void convertUnits_shouldReturnInvalid_whenBothUomsInvalid() throws Exception {
+
+        var uomConversionWriteDto = new UnitOfMeasureConversionWriteDto();
+        uomConversionWriteDto.inputNumericalValue = BigDecimal.valueOf(136.1);
+        uomConversionWriteDto.inputUom = "dog";
+        uomConversionWriteDto.targetUom = "cat";
         uomConversionWriteDto.studentAnswer = "45.32";
 
         ObjectMapper objectMapper = new ObjectMapper();
