@@ -36,13 +36,16 @@ public class UnitOfMeasureConversionValidationService {
      */
     public UnitOfMeasureConversionDto uomConversionValidation(UnitOfMeasureConversionWriteDto dto) {
 
+        // Validate that String inputUom and targetUom can be mapped to UnitOfMeasure enums
         if (!UnitConversionUtil.isValidUom(dto.inputUom) || !UnitConversionUtil.isValidUom(dto.targetUom)) {
             return new UnitOfMeasureConversionDto("invalid");
         }
 
+        // Returns the UnitOfMeasure enum, given the String inputUom and targetUom
         var inputUom = UnitConversionUtil.parseUnitOfMeasure(dto.inputUom);
         var targetUom = UnitConversionUtil.parseUnitOfMeasure(dto.targetUom);
 
+        // Validate that input and target UOMs are of the same type
         if (!inputUom.getUomType().equals(targetUom.getUomType())) {
             return new UnitOfMeasureConversionDto("invalid");
         }
@@ -57,12 +60,12 @@ public class UnitOfMeasureConversionValidationService {
 
         var correct = false;
         if (UomType.VOLUME.equals(inputUom.getUomType())) {
-            // Calculate inputNumericalValue conversion to cubic inches
+            // Calculate inputNumericalValue conversion to base UOM, cubic inches
             BigDecimal numericalValueAsCubicInches = UnitConversionUtil.convertVolumeToCubicInches(inputUom, dto.inputNumericalValue);
 
             correct = validateVolumeConversion(numericalValueAsCubicInches, targetUom, BigDecimal.valueOf(Double.parseDouble(dto.studentAnswer)));
         } else {
-            // Calculate inputNumericalValue conversion to base UOM
+            // Calculate inputNumericalValue conversion to base UOM, Fahrenheit
             BigDecimal numericalValueAsFahrenheit = UnitConversionUtil.convertTemperatureToFahrenheit(inputUom, dto.inputNumericalValue);
 
             correct = validateTemperatureConversion(numericalValueAsFahrenheit, targetUom, BigDecimal.valueOf(Double.parseDouble(dto.studentAnswer)));
