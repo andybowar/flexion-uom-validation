@@ -110,8 +110,7 @@ public class UnitOfMeasureConversionValidationService {
 
     private void validateVolumeConversion(BigDecimal inputNumericalValueAsCubicInches, String targetUom, BigDecimal studentAnswer, UnitOfMeasureConversionDto conversionDto) {
         BigDecimal numericalValueAsTargetUom = UnitConversionUtil.convertVolumeFromCubicInches(targetUom, inputNumericalValueAsCubicInches);
-        // TODO: Evaluate after rounding numericalValueAsTargetUom and studentAnswer to tenths place
-        if (UnitConversionUtil.equalsIgnoreScale(numericalValueAsTargetUom, studentAnswer)) {
+        if (UnitConversionUtil.equalsIgnoreScale(numericalValueAsTargetUom.setScale(1, RoundingMode.CEILING), studentAnswer.setScale(1, RoundingMode.CEILING))) {
             conversionDto.validationOutput = "correct";
         } else {
             log.info("An incorrect answer has been provided for volume conversion. The correct answer is: {}", numericalValueAsTargetUom);
@@ -121,8 +120,7 @@ public class UnitOfMeasureConversionValidationService {
 
     private void validateTemperatureConversion(BigDecimal inputNumericalValueAsFahrenheit, String targetUom, BigDecimal studentAnswer, UnitOfMeasureConversionDto conversionDto) {
         BigDecimal numericalValueAsTargetUom = UnitConversionUtil.convertTemperatureFromFahrenheit(targetUom, inputNumericalValueAsFahrenheit);
-        // TODO: Evaluate after rounding numericalValueAsTargetUom and studentAnswer to tenths place
-        if (UnitConversionUtil.equalsIgnoreScale(numericalValueAsTargetUom, studentAnswer)) {
+        if (UnitConversionUtil.equalsIgnoreScale(numericalValueAsTargetUom.setScale(1, RoundingMode.HALF_UP), studentAnswer.setScale(1, RoundingMode.HALF_UP))) {
             conversionDto.validationOutput = "correct";
         } else {
             log.info("An incorrect answer has been provided for temperature conversion. The correct answer is: {}", numericalValueAsTargetUom);
