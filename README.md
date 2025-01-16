@@ -17,9 +17,22 @@ Notes on functionality
   * "invalid" should only occur when units of different types are being compared
   * An incorrect answer, including something nonsensical like a string, should render a response of "incorrect"
 
-TO DO
+Pushing code and deploying
 ---
+<<<<<<< Updated upstream
 * Address TODOs in code
 * Add integration tests
 * Fix issue where String can be passed for `inputNumericalValue`, causing an error 
 * Add docker containerization and get pipeline working in Github
+=======
+To push new code: 
+* Create a new branch with `git checkout -b [new-branch-name]`
+* `git add .`
+* `git commit -m ["this commit will..."]` i.e. The commit message should complete the sentence, "This commit will..."
+* `git push --set-upstream origin <branch name>`
+* In Github, create a new pull request to `main`. Once the branch is merged to main, a deploy to AWS will kick off.
+
+Improvement Tasks
+---
+* Update pipeline configuration to include running all unit and integration tests before deploying
+>>>>>>> Stashed changes

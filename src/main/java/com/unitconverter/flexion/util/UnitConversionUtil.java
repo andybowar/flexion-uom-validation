@@ -29,17 +29,17 @@ public class UnitConversionUtil {
     public static BigDecimal convertVolumeFromCubicInches(String targetUom, BigDecimal inputNumericalValueAsCubicInches) {
         BigDecimal numericalValueAsTargetUom = BigDecimal.valueOf(0);
         if (targetUom.equals(CUPS.getDisplayName())) {
-            numericalValueAsTargetUom = inputNumericalValueAsCubicInches.divide(BigDecimal.valueOf(14.4375), RoundingMode.HALF_DOWN);
+            numericalValueAsTargetUom = inputNumericalValueAsCubicInches.divide(BigDecimal.valueOf(14.4375), RoundingMode.HALF_UP);
         } else if (targetUom.equals(LITERS.getDisplayName())) {
-            numericalValueAsTargetUom = inputNumericalValueAsCubicInches.divide(BigDecimal.valueOf(61.023744), RoundingMode.HALF_DOWN);
+            numericalValueAsTargetUom = inputNumericalValueAsCubicInches.divide(BigDecimal.valueOf(61.023744), RoundingMode.HALF_UP);
         } else if (targetUom.equals(TABLESPOONS.getDisplayName())) {
-            numericalValueAsTargetUom = inputNumericalValueAsCubicInches.divide(BigDecimal.valueOf(0.902344), RoundingMode.HALF_DOWN);
+            numericalValueAsTargetUom = inputNumericalValueAsCubicInches.divide(BigDecimal.valueOf(0.902344), RoundingMode.HALF_UP);
         } else if (targetUom.equals(CUBIC_INCHES.getDisplayName())) {
             numericalValueAsTargetUom = inputNumericalValueAsCubicInches;
         } else if (targetUom.equals(CUBIC_FEET.getDisplayName())) {
-            numericalValueAsTargetUom = inputNumericalValueAsCubicInches.divide(BigDecimal.valueOf(1728), RoundingMode.HALF_DOWN);
+            numericalValueAsTargetUom = inputNumericalValueAsCubicInches.divide(BigDecimal.valueOf(1728), RoundingMode.HALF_UP);
         } else if (targetUom.equals(GALLONS.getDisplayName())) {
-            numericalValueAsTargetUom = inputNumericalValueAsCubicInches.divide(BigDecimal.valueOf(231), RoundingMode.HALF_DOWN);
+            numericalValueAsTargetUom = inputNumericalValueAsCubicInches.divide(BigDecimal.valueOf(231), RoundingMode.HALF_UP);
         }
         return numericalValueAsTargetUom;
     }
@@ -48,16 +48,16 @@ public class UnitConversionUtil {
         BigDecimal numericalValueAsFahrenheit = BigDecimal.valueOf(0);
         if (inputUom.equals(KELVIN.getDisplayName())) {
             // F = (K - 273.15) * 1.8 + 32
-            numericalValueAsFahrenheit = (inputNumericalValue.subtract(BigDecimal.valueOf(273.15)).multiply(BigDecimal.valueOf(1.8)).add(BigDecimal.valueOf(32))).setScale(2, RoundingMode.HALF_DOWN);
+            numericalValueAsFahrenheit = (inputNumericalValue.subtract(BigDecimal.valueOf(273.15)).multiply(BigDecimal.valueOf(1.8)).add(BigDecimal.valueOf(32))).setScale(2, RoundingMode.HALF_UP);
         } else if (inputUom.equals(CELSIUS.getDisplayName())) {
             // F = (C * 1.8) + 32
-            numericalValueAsFahrenheit = inputNumericalValue.multiply(BigDecimal.valueOf(1.8)).add(BigDecimal.valueOf(32)).setScale(2, RoundingMode.HALF_DOWN);
+            numericalValueAsFahrenheit = inputNumericalValue.multiply(BigDecimal.valueOf(1.8)).add(BigDecimal.valueOf(32)).setScale(2, RoundingMode.HALF_UP);
         } else if (inputUom.equals(FAHRENHEIT.getDisplayName())) {
             // F = F
             numericalValueAsFahrenheit = inputNumericalValue;
         } else if (inputUom.equals(RANKINE.getDisplayName())) {
             // F = R - 459.67
-            numericalValueAsFahrenheit = inputNumericalValue.subtract(BigDecimal.valueOf(459.67)).setScale(2, RoundingMode.HALF_DOWN);
+            numericalValueAsFahrenheit = inputNumericalValue.subtract(BigDecimal.valueOf(459.67)).setScale(2, RoundingMode.HALF_UP);
         }
 
         return numericalValueAsFahrenheit;
@@ -67,16 +67,16 @@ public class UnitConversionUtil {
         BigDecimal numericalValueAsTargetUom = BigDecimal.valueOf(0);
         if (targetUom.equals(KELVIN.getDisplayName())) {
             // K = (F + 459.67) / 1.8
-            numericalValueAsTargetUom = (inputNumericalValueAsFahrenheit.add(BigDecimal.valueOf(459.67))).divide(BigDecimal.valueOf(1.8), 2, RoundingMode.HALF_DOWN);
+            numericalValueAsTargetUom = (inputNumericalValueAsFahrenheit.add(BigDecimal.valueOf(459.67))).divide(BigDecimal.valueOf(1.8), 2, RoundingMode.HALF_UP);
         } else if (targetUom.equals(CELSIUS.getDisplayName())) {
             // C = (F - 32) / 1.8
-            numericalValueAsTargetUom = (inputNumericalValueAsFahrenheit.subtract(BigDecimal.valueOf(32))).divide(BigDecimal.valueOf(1.8), 2, RoundingMode.HALF_DOWN);
+            numericalValueAsTargetUom = (inputNumericalValueAsFahrenheit.subtract(BigDecimal.valueOf(32))).divide(BigDecimal.valueOf(1.8), 2, RoundingMode.HALF_UP);
         } else if (targetUom.equals(FAHRENHEIT.getDisplayName())) {
             // F = F
             numericalValueAsTargetUom = inputNumericalValueAsFahrenheit;
         } else if (targetUom.equals(RANKINE.getDisplayName())) {
             // R = F + 459.67
-            numericalValueAsTargetUom = inputNumericalValueAsFahrenheit.add(BigDecimal.valueOf(459.67)).setScale(2, RoundingMode.HALF_DOWN);
+            numericalValueAsTargetUom = inputNumericalValueAsFahrenheit.add(BigDecimal.valueOf(459.67)).setScale(2, RoundingMode.HALF_UP);
         }
         return numericalValueAsTargetUom;
     }
