@@ -32,7 +32,7 @@ public class UnitConversionUtil {
             case CUBIC_INCHES -> inputNumericalValueAsCubicInches;
             case CUBIC_FEET -> inputNumericalValueAsCubicInches.divide(BigDecimal.valueOf(1728), RoundingMode.HALF_UP);
             case GALLONS -> inputNumericalValueAsCubicInches.divide(BigDecimal.valueOf(231), RoundingMode.HALF_UP);
-            default -> throw new RuntimeException("Input UOM is not a volume UOM");
+            default -> throw new RuntimeException("Target UOM is not a volume UOM");
         };
     }
 
