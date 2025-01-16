@@ -19,12 +19,6 @@ Notes on functionality
 
 Pushing code and deploying
 ---
-<<<<<<< Updated upstream
-* Address TODOs in code
-* Add integration tests
-* Fix issue where String can be passed for `inputNumericalValue`, causing an error 
-* Add docker containerization and get pipeline working in Github
-=======
 To push new code: 
 * Create a new branch with `git checkout -b [new-branch-name]`
 * `git add .`
@@ -35,4 +29,3 @@ To push new code:
 Improvement Tasks
 ---
 * Update pipeline configuration to include running all unit and integration tests before deploying
->>>>>>> Stashed changes
