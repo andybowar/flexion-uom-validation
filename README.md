@@ -1,8 +1,7 @@
 Running the application:
 ===
-* After cloning the repo, if using Intellij, go to the Project Structure settings and make sure OpenJDK 19 is set as the SDK.
-* In the command line, navigate to the directory of this project and run `mvn clean install`
-* Run the project by running `mvn spring-boot:run` in the command line
+* In the command line, navigate to the directory of this project and run `./mvnw clean install`
+* Run the project by running `./mvnw spring-boot:run` in the command line
 
 Using the application
 ---
@@ -23,9 +22,11 @@ To push new code:
 * Create a new branch with `git checkout -b [new-branch-name]`
 * `git add .`
 * `git commit -m ["this commit will..."]` i.e. The commit message should complete the sentence, "This commit will..."
-* `git push --set-upstream origin <branch name>`
+* `git push --set-upstream flexion-uom-valdiation <branch name>`
 * In Github, create a new pull request to `main`. Once the branch is merged to main, a deploy to AWS will kick off.
 
 Improvement Tasks
 ---
 * Update pipeline configuration to include running all unit and integration tests before deploying
+* The FE code currently sends a separate request for each row. This is not the most optimal method, so we could refactor the endpoint and service to take in a list of problems to evaluate.
+* The volume conversion logic in UnitConversionUtil could be made more DRY
