@@ -98,7 +98,7 @@ public class UnitConversionUtil {
         try {
             parseUnitOfMeasure(unitOfMeasure);
         } catch (IllegalArgumentException e) {
-            log.info("Could not parse given unit of measure {} as Unit of Measure", unitOfMeasure);
+            log.info("Could not parse given unit of measure {} as UnitOfMeasure", unitOfMeasure);
             return false;
         }
         return true;
