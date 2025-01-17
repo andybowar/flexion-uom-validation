@@ -1,13 +1,14 @@
 Running the application:
 ===
-* In the command line, navigate to the directory of this project and run `./mvnw clean install`
-* Run the project by running `./mvnw spring-boot:run` in the command line
+* Navigate to the directory of this project and run `./mvnw clean install`
+* Run the project with `./mvnw spring-boot:run`
 
 Using the application
 ---
 #### This application features the ability to evaluate a student's guess as to the conversion of one unit of measure to another (e.g. 0 Celsius converts to 32 Fahrenheit)
 * The application has one endpoint which can be tested in Swagger at http://localhost:8080/swagger-ui/index.html
-* The application also has a basic web page which can be found [here](./scripts/front-end/index.html).
+* The application also has a basic front end which can be found [here](./scripts/front-end/index.html).
+  * To load the FE, navigate to [http://localhost:63342/flexion/scripts/front-end/index.html](http://localhost:63342/flexion/scripts/front-end/index.html) in a browser
 
 Notes on functionality
 ---
@@ -30,3 +31,5 @@ Improvement Tasks
 * Update pipeline configuration to include running all unit and integration tests before deploying
 * The FE code currently sends a separate request for each row. This is not the most optimal method, so we could refactor the endpoint and service to take in a list of problems to evaluate.
 * The volume conversion logic in UnitConversionUtil could be made more DRY
+* Improve error handling throughout, such as providing more details from the API when something goes wrong
+* More tests could be added to cover more cases with varying decimal places, as well as special characters

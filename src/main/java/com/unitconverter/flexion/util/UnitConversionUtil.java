@@ -37,7 +37,7 @@ public class UnitConversionUtil {
     }
 
     public static BigDecimal convertTemperatureToFahrenheit(UnitOfMeasure inputUom, BigDecimal inputNumericalValue) {
-        BigDecimal numericalValueAsFahrenheit = BigDecimal.valueOf(0);
+        var numericalValueAsFahrenheit = BigDecimal.valueOf(0);
         if (KELVIN.equals(inputUom)) {
             // F = (K - 273.15) * 1.8 + 32
             numericalValueAsFahrenheit = (inputNumericalValue.subtract(BigDecimal.valueOf(273.15)).multiply(BigDecimal.valueOf(1.8)).add(BigDecimal.valueOf(32))).setScale(2, RoundingMode.HALF_UP);
@@ -56,7 +56,7 @@ public class UnitConversionUtil {
     }
 
     public static BigDecimal convertTemperatureFromFahrenheit(UnitOfMeasure targetUom, BigDecimal inputNumericalValueAsFahrenheit) {
-        BigDecimal numericalValueAsTargetUom = BigDecimal.valueOf(0);
+        var numericalValueAsTargetUom = BigDecimal.valueOf(0);
         if (KELVIN.equals(targetUom)) {
             // K = (F + 459.67) / 1.8
             numericalValueAsTargetUom = (inputNumericalValueAsFahrenheit.add(BigDecimal.valueOf(459.67))).divide(BigDecimal.valueOf(1.8), 2, RoundingMode.HALF_UP);

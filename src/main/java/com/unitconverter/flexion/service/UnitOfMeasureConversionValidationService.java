@@ -61,12 +61,12 @@ public class UnitOfMeasureConversionValidationService {
         var correct = false;
         if (UomType.VOLUME.equals(inputUom.getUomType())) {
             // Calculate inputNumericalValue conversion to base UOM, cubic inches
-            BigDecimal numericalValueAsCubicInches = UnitConversionUtil.convertVolumeToCubicInches(inputUom, dto.inputNumericalValue);
+            var numericalValueAsCubicInches = UnitConversionUtil.convertVolumeToCubicInches(inputUom, dto.inputNumericalValue);
 
             correct = validateVolumeConversion(numericalValueAsCubicInches, targetUom, BigDecimal.valueOf(Double.parseDouble(dto.studentAnswer)));
         } else {
             // Calculate inputNumericalValue conversion to base UOM, Fahrenheit
-            BigDecimal numericalValueAsFahrenheit = UnitConversionUtil.convertTemperatureToFahrenheit(inputUom, dto.inputNumericalValue);
+            var numericalValueAsFahrenheit = UnitConversionUtil.convertTemperatureToFahrenheit(inputUom, dto.inputNumericalValue);
 
             correct = validateTemperatureConversion(numericalValueAsFahrenheit, targetUom, BigDecimal.valueOf(Double.parseDouble(dto.studentAnswer)));
         }
@@ -76,12 +76,12 @@ public class UnitOfMeasureConversionValidationService {
     }
 
     private boolean validateVolumeConversion(BigDecimal inputNumericalValueAsCubicInches, UnitOfMeasure targetUom, BigDecimal studentAnswer) {
-        BigDecimal numericalValueAsTargetUom = UnitConversionUtil.convertVolumeFromCubicInches(targetUom, inputNumericalValueAsCubicInches);
+        var numericalValueAsTargetUom = UnitConversionUtil.convertVolumeFromCubicInches(targetUom, inputNumericalValueAsCubicInches);
         return UnitConversionUtil.equalsIgnoreScale(numericalValueAsTargetUom.setScale(1, RoundingMode.CEILING), studentAnswer.setScale(1, RoundingMode.CEILING));
     }
 
     private boolean validateTemperatureConversion(BigDecimal inputNumericalValueAsFahrenheit, UnitOfMeasure targetUom, BigDecimal studentAnswer) {
-        BigDecimal numericalValueAsTargetUom = UnitConversionUtil.convertTemperatureFromFahrenheit(targetUom, inputNumericalValueAsFahrenheit);
+        var numericalValueAsTargetUom = UnitConversionUtil.convertTemperatureFromFahrenheit(targetUom, inputNumericalValueAsFahrenheit);
         return UnitConversionUtil.equalsIgnoreScale(numericalValueAsTargetUom.setScale(1, RoundingMode.HALF_UP), studentAnswer.setScale(1, RoundingMode.HALF_UP));
     }
 }
