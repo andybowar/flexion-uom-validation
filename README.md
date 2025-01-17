@@ -8,7 +8,7 @@ Using the application
 #### This application features the ability to evaluate a student's guess as to the conversion of one unit of measure to another (e.g. 0 Celsius converts to 32 Fahrenheit)
 * The application has one endpoint which can be tested in Swagger at http://localhost:8080/swagger-ui/index.html
 * The application also has a basic front end which can be found [here](./scripts/front-end/index.html).
-  * To load the FE, navigate to [http://localhost:63342/flexion/scripts/front-end/index.html](http://localhost:63342/flexion/scripts/front-end/index.html) in a browser
+  * To load the FE, navigate to [http://localhost:63342/flexion/scripts/front-end/index.html](http://localhost:63342/flexion/scripts/front-end/index.html) in a browser while the application is running
 
 Notes on functionality
 ---
