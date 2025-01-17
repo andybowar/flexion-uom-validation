@@ -36,13 +36,16 @@ public class UnitOfMeasureConversionValidationService {
      */
     public UnitOfMeasureConversionDto uomConversionValidation(UnitOfMeasureConversionWriteDto dto) {
 
+        // Validate that String inputUom and targetUom can be mapped to UnitOfMeasure enums
         if (!UnitConversionUtil.isValidUom(dto.inputUom) || !UnitConversionUtil.isValidUom(dto.targetUom)) {
             return new UnitOfMeasureConversionDto("invalid");
         }
 
+        // Returns the UnitOfMeasure enum, given the String inputUom and targetUom
         var inputUom = UnitConversionUtil.parseUnitOfMeasure(dto.inputUom);
         var targetUom = UnitConversionUtil.parseUnitOfMeasure(dto.targetUom);
 
+        // Validate that input and target UOMs are of the same type
         if (!inputUom.getUomType().equals(targetUom.getUomType())) {
             return new UnitOfMeasureConversionDto("invalid");
         }
@@ -57,13 +60,13 @@ public class UnitOfMeasureConversionValidationService {
 
         var correct = false;
         if (UomType.VOLUME.equals(inputUom.getUomType())) {
-            // Calculate inputNumericalValue conversion to cubic inches
-            BigDecimal numericalValueAsCubicInches = UnitConversionUtil.convertVolumeToCubicInches(inputUom, dto.inputNumericalValue);
+            // Calculate inputNumericalValue conversion to base UOM, cubic inches
+            var numericalValueAsCubicInches = UnitConversionUtil.convertVolumeToCubicInches(inputUom, dto.inputNumericalValue);
 
             correct = validateVolumeConversion(numericalValueAsCubicInches, targetUom, BigDecimal.valueOf(Double.parseDouble(dto.studentAnswer)));
         } else {
-            // Calculate inputNumericalValue conversion to base UOM
-            BigDecimal numericalValueAsFahrenheit = UnitConversionUtil.convertTemperatureToFahrenheit(inputUom, dto.inputNumericalValue);
+            // Calculate inputNumericalValue conversion to base UOM, Fahrenheit
+            var numericalValueAsFahrenheit = UnitConversionUtil.convertTemperatureToFahrenheit(inputUom, dto.inputNumericalValue);
 
             correct = validateTemperatureConversion(numericalValueAsFahrenheit, targetUom, BigDecimal.valueOf(Double.parseDouble(dto.studentAnswer)));
         }
@@ -73,12 +76,12 @@ public class UnitOfMeasureConversionValidationService {
     }
 
     private boolean validateVolumeConversion(BigDecimal inputNumericalValueAsCubicInches, UnitOfMeasure targetUom, BigDecimal studentAnswer) {
-        BigDecimal numericalValueAsTargetUom = UnitConversionUtil.convertVolumeFromCubicInches(targetUom, inputNumericalValueAsCubicInches);
+        var numericalValueAsTargetUom = UnitConversionUtil.convertVolumeFromCubicInches(targetUom, inputNumericalValueAsCubicInches);
         return UnitConversionUtil.equalsIgnoreScale(numericalValueAsTargetUom.setScale(1, RoundingMode.CEILING), studentAnswer.setScale(1, RoundingMode.CEILING));
     }
 
     private boolean validateTemperatureConversion(BigDecimal inputNumericalValueAsFahrenheit, UnitOfMeasure targetUom, BigDecimal studentAnswer) {
-        BigDecimal numericalValueAsTargetUom = UnitConversionUtil.convertTemperatureFromFahrenheit(targetUom, inputNumericalValueAsFahrenheit);
+        var numericalValueAsTargetUom = UnitConversionUtil.convertTemperatureFromFahrenheit(targetUom, inputNumericalValueAsFahrenheit);
         return UnitConversionUtil.equalsIgnoreScale(numericalValueAsTargetUom.setScale(1, RoundingMode.HALF_UP), studentAnswer.setScale(1, RoundingMode.HALF_UP));
     }
 }
